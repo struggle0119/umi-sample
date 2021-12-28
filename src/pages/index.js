@@ -60,7 +60,7 @@ var cal = {
     return true
   },
   formatMoney: function(val) {
-    return transFunc.intToFloat10(transFunc.floatToInt10(val))
+    return transFunc.intToFloat(transFunc.floatToInt(val))
   },
   formatArea: function(val) {
     return transFunc.intToFloat(transFunc.floatToInt(val))
@@ -164,7 +164,7 @@ class App extends React.Component {
     console.log("总计", total)
 
     var totalAmount = total + values.deal
-    console.log("总房款", totalAmount)
+    console.log("总房款（不含中介费）", totalAmount)
   }
   render() {
     return (
