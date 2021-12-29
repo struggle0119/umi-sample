@@ -36,12 +36,6 @@ var transFunc = {
   intToFloat: function (val) {
     return parseFloat(val / 100)
   },
-  floatToInt10: function (val) {
-    return parseInt(val * 10)
-  },
-  intToFloat10: function (val) {
-    return parseFloat(val / 10)
-  }
 }
 
 var cal = {
@@ -180,7 +174,7 @@ class App extends React.Component {
       }}>
         <Form.Item name="buy">
           <Select style={{ width: 240 }}>
-            <Option value={constant.buyFirst}>手套</Option>
+            <Option value={constant.buyFirst}>首套</Option>
             <Option value={constant.buySecond}>二套</Option>
           </Select>
         </Form.Item>
@@ -218,6 +212,9 @@ class App extends React.Component {
         </Form.Item>
         <Form.Item name="area">
           <Input placeholder="面积" style={{ width: 240 }} />
+        </Form.Item>
+        <Form.Item name="loan">
+          <Input placeholder="贷款金额" style={{ width: 240 }} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">提交</Button>
