@@ -1,5 +1,5 @@
 import styles from './index.css';
-import { Form, Button, Select, Input } from 'antd';
+import { Modal, Form, Button, Select, Input } from 'antd';
 import React from "react"
 
 // 定义共同选项
@@ -136,6 +136,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   };
+  state = {
+    isModalVisible: false,
+    result: {
+      deed: 0,
+      added: 0,
+      income:0,
+      other:0,
+      total:0,
+      totalAmount:0,
+    }
+  }
   submit = (values) => {
     values.deal = Number(values.deal)
     values.net = Number(values.net)
@@ -143,26 +154,46 @@ class App extends React.Component {
     values.area = Number(values.area)
 
     var deed = cal.deed(values)
-    console.log("契税", deed)
-
     var added = cal.added(values)
-    console.log("增值税", added)
-
     var income = cal.income(values)
-    console.log("个税", income)
-
     var other = cal.other(values)
-    console.log("其他", other)
-
     var total = deed + added + income + other
-    console.log("总计", total)
-
     var totalAmount = total + values.deal
-    console.log("总房款（不含中介费）", totalAmount)
+    Modal.info({
+      title: '计算结果',
+      content: (
+        <div>
+          <p>契税: {deed}</p>
+          <p>增值税：{added}</p>
+          <p>个税：{income}</p>
+          <p>其他: {other}</p>
+          <p>总计：{total}</p>
+          <p>总房款（不含中介费）：{totalAmount}</p>
+        </div>
+      ),
+      onOk() {},
+      okText: "关闭"
+    });
+    
+    // this.setState({result:{
+    //   deed: deed,
+    //   added:added,
+    //   income:income,
+    //   other:other,
+    //   total:total,
+    //   totalAmount:totalAmount,
+    // }})
+  }
+  close = () => {
+    this.setState({isModalVisible:false})
+  }
+  open = () => {
+    this.setState({isModalVisible:true})
   }
   render() {
     return (
-      <Form ref={this.formRef} onFinish={this.submit} initialValues={{
+      <div>
+        <Form ref={this.formRef} onFinish={this.submit} initialValues={{
         buy: constant.buyFirst,
         house: constant.houseNormal,
         right: constant.rightGoods,
@@ -213,13 +244,19 @@ class App extends React.Component {
         <Form.Item name="area">
           <Input placeholder="面积" style={{ width: 240 }} />
         </Form.Item>
-        <Form.Item name="loan">
-          <Input placeholder="贷款金额" style={{ width: 240 }} />
-        </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">提交</Button>
+          <Button type="primary" htmlType="submit" onClick={this.open}>提交</Button>
         </Form.Item>
       </Form>
+      {/* <Modal title="计算结果" visible={this.state.isModalVisible} onOk={this.close} onCancel={this.close}>
+        <p>契税: {this.state.result.deed}</p>
+        <p>增值税：{this.state.result.added}</p>
+        <p>个税：{this.state.result.income}</p>
+        <p>其他: {this.state.result.other}</p>
+        <p>总计：{this.state.result.total}</p>
+        <p>总房款（不含中介费）：{this.state.result.totalAmount}</p>
+      </Modal> */}
+      </div>
     );
   }
 }
