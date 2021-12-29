@@ -17,7 +17,7 @@ export default {
       antd: false,
       dva: false,
       dynamicImport: false,
-      title: 'simple2',
+      title: '购房助手',
       dll: false,
       
       routes: {

@@ -217,7 +217,7 @@ class App extends React.Component {
         </Form.Item>
         <Form.Item name="right">
           <Select style={{ width: 240 }}>
-            <Option value={constant.rightGoods}>商品房子</Option>
+            <Option value={constant.rightGoods}>商品房</Option>
             <Option value={constant.rightBuyPublic}>已购公租房</Option>
             <Option value={constant.rightTwoCheap}>二类经适房</Option>
             <Option value={constant.rightOneCheap1}>一类经适房（10%）</Option>
