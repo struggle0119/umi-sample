@@ -1,9 +1,11 @@
 import styles from './index.css';
-import { Modal, Form, Button, Select, Input } from 'antd';
+import { Modal, Form, Button, Select, Input, Tabs, InputNumber } from 'antd';
 import React from "react"
 
 // 定义共同选项
 const { Option } = Select;
+
+const { TabPane } = Tabs;
 
 // 定义常量
 const constant = {
@@ -174,15 +176,6 @@ class App extends React.Component {
       onOk() {},
       okText: "关闭"
     });
-    
-    // this.setState({result:{
-    //   deed: deed,
-    //   added:added,
-    //   income:income,
-    //   other:other,
-    //   total:total,
-    //   totalAmount:totalAmount,
-    // }})
   }
   close = () => {
     this.setState({isModalVisible:false})
@@ -193,69 +186,71 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Form ref={this.formRef} onFinish={this.submit} initialValues={{
-        buy: constant.buyFirst,
-        house: constant.houseNormal,
-        right: constant.rightGoods,
-        year: constant.yearFullFiveUnique,
-        deal: "",
-        net: "",
-        origin: "",
-        area: "",
-      }}>
-        <Form.Item name="buy">
-          <Select style={{ width: 240 }}>
-            <Option value={constant.buyFirst}>首套</Option>
-            <Option value={constant.buySecond}>二套</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="house">
-          <Select style={{ width: 240 }}>
-            <Option value={constant.houseNormal}>普通住宅</Option>
-            <Option value={constant.houseNotNormal}>非普通住宅</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="right">
-          <Select style={{ width: 240 }}>
-            <Option value={constant.rightGoods}>商品房</Option>
-            <Option value={constant.rightBuyPublic}>已购公租房</Option>
-            <Option value={constant.rightTwoCheap}>二类经适房</Option>
-            <Option value={constant.rightOneCheap1}>一类经适房（10%）</Option>
-            <Option value={constant.rightOneCheap2}>一类经适房（差额70%）</Option>
-            <Option value={constant.rightLimit}>两限房（差额35%）</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="year">
-          <Select defaultValue={constant.yearFullFiveUnique} style={{ width: 240 }}>
-            <Option value={constant.yearFullFiveUnique}>满五唯一</Option>
-            <Option value={constant.yearFullTwo}>满两年</Option>
-            <Option value={constant.yearAlmostTwo}>不满两年</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="deal">
-          <Input placeholder="成交价格" style={{ width: 240 }} />
-        </Form.Item>
-        <Form.Item name="net">
-          <Input placeholder="网签价格" style={{ width: 240 }} />
-        </Form.Item>
-        <Form.Item name="origin">
-          <Input placeholder="原值" style={{ width: 240 }} />
-        </Form.Item>
-        <Form.Item name="area">
-          <Input placeholder="面积" style={{ width: 240 }} />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" onClick={this.open}>提交</Button>
-        </Form.Item>
-      </Form>
-      {/* <Modal title="计算结果" visible={this.state.isModalVisible} onOk={this.close} onCancel={this.close}>
-        <p>契税: {this.state.result.deed}</p>
-        <p>增值税：{this.state.result.added}</p>
-        <p>个税：{this.state.result.income}</p>
-        <p>其他: {this.state.result.other}</p>
-        <p>总计：{this.state.result.total}</p>
-        <p>总房款（不含中介费）：{this.state.result.totalAmount}</p>
-      </Modal> */}
+        <Tabs defaultActiveKey="1" centered>
+          <TabPane tab="房款计算器" key="1">
+            <Form ref={this.formRef} onFinish={this.submit} initialValues={{
+              buy: constant.buyFirst,
+              house: constant.houseNormal,
+              right: constant.rightGoods,
+              year: constant.yearFullFiveUnique,
+              deal: "",
+              net: "",
+              origin: "",
+              area: "",
+            }} labelCol={{span:4, offset: 1, flex:"0 0 20%"}} wrapperCol={{span:14, flex:"0 0 70%"}}>
+              <Form.Item name="buy" label="套数">
+                <Select>
+                  <Option value={constant.buyFirst}>首套</Option>
+                  <Option value={constant.buySecond}>二套</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item name="house" label="住宅类型">
+                <Select>
+                  <Option value={constant.houseNormal}>普通住宅</Option>
+                  <Option value={constant.houseNotNormal}>非普通住宅</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item name="right" label="产权性质">
+                <Select>
+                  <Option value={constant.rightGoods}>商品房</Option>
+                  <Option value={constant.rightBuyPublic}>已购公租房</Option>
+                  <Option value={constant.rightTwoCheap}>二类经适房</Option>
+                  <Option value={constant.rightOneCheap1}>一类经适房（10%）</Option>
+                  <Option value={constant.rightOneCheap2}>一类经适房（差额70%）</Option>
+                  <Option value={constant.rightLimit}>两限房（差额35%）</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item name="year" label="产权年限">
+                <Select defaultValue={constant.yearFullFiveUnique}>
+                  <Option value={constant.yearFullFiveUnique}>满五唯一</Option>
+                  <Option value={constant.yearFullTwo}>满两年</Option>
+                  <Option value={constant.yearAlmostTwo}>不满两年</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item name="deal" label="成交价格">
+                <InputNumber placeholder="成交价格" step={0.1} addonAfter="万元" style={{ width: '100%' }}/>
+              </Form.Item>
+              <Form.Item name="net" label="网签价格">
+                <InputNumber placeholder="网签价格" step={0.1} addonAfter="万元" style={{ width: '100%' }} />
+              </Form.Item>
+              <Form.Item name="origin" label="原值">
+                <InputNumber placeholder="原值" addonAfter="万元" style={{ width: '100%' }} />
+              </Form.Item>
+              <Form.Item name="area" label="面积">
+                <InputNumber placeholder="面积" addonAfter="平米" style={{ width: '100%' }}/>
+              </Form.Item>
+              <Form.Item wrapperCol={{span:24, flex:"0 0 100%"}}>
+                <Button type="primary" htmlType="submit" onClick={this.open}>开始计算</Button>
+              </Form.Item>
+            </Form>
+          </TabPane>
+          <TabPane tab="计算器002" key="2">
+            敬请期待
+          </TabPane>
+          <TabPane tab="计算器003" key="3">
+            敬请期待
+          </TabPane>
+        </Tabs>
       </div>
     );
   }
