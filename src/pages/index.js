@@ -130,6 +130,26 @@ var cal = {
       res = (values.net-values.origin) * 0.35
     }  
     return this.formatMoney(res)
+  },
+  loan: function(values) {
+    var res = 0
+    if (values.buy == constant.buyFirst) {
+      // 普通住宅
+      if (values.house == constant.houseNormal) {
+        res = values.net * 0.65
+      } else {
+        res = values.net * 0.6
+      }
+    } else if (values.buy == constant.buySecond) {
+      // 普通住宅
+      if (values.house == constant.houseNormal) {
+        res = values.net * 0.4
+      } else {
+        res = values.net * 0.2
+      }
+    }
+
+    return this.formatMoney(res)
   }
 }
 
@@ -159,6 +179,8 @@ class App extends React.Component {
     var added = cal.added(values)
     var income = cal.income(values)
     var other = cal.other(values)
+    // 贷款金额
+    var loan = cal.loan(values)
     var total = deed + added + income + other
     var totalAmount = total + values.deal
     Modal.info({
@@ -169,8 +191,10 @@ class App extends React.Component {
           <p>增值税：{added}</p>
           <p>个税：{income}</p>
           <p>其他: {other}</p>
-          <p>总计：{total}</p>
-          <p>总房款（不含中介费）：{totalAmount}</p>
+          <p>总计：{cal.formatMoney(total)}</p>
+          <p>总房款（不含中介费）：{cal.formatMoney(totalAmount)}</p>
+          <p>贷款金额：{loan}</p>
+          <p>首付款：{cal.formatMoney(totalAmount-loan)}</p>
         </div>
       ),
       onOk() {},
