@@ -273,12 +273,12 @@ class App extends React.Component {
               </Form.Item>
             </Form>
           </TabPane>
-          <TabPane tab="计算器002" key="2">
+          {/* <TabPane tab="计算器002" key="2">
             敬请期待
           </TabPane>
           <TabPane tab="计算器003" key="3">
             敬请期待
-          </TabPane>
+          </TabPane> */}
         </Tabs>
       </div>
     );
