@@ -16,11 +16,12 @@ const constant = {
   houseNotNormal: 2, // 非普通住宅
 
   rightGoods: 1, // 商品房子
-  rightBuyPublic: 2, // 已购公租房
   rightTwoCheap: 3, // 二类经适房
   rightOneCheap1: 4, // 一类经适房（10%）
   rightOneCheap2: 5, // 一类经适房（差额70%）
   rightLimit: 6, // 两限房（差额35%）
+  rightBuyPublicCost: 7, // 已购公房（成本价）
+  rightBuyPublicDiscount: 8, // 已购公房（优惠价）
 
   yearFullFiveUnique: 1, // 满五唯一
   yearFullTwo: 2, // 满两年
@@ -96,8 +97,8 @@ var cal = {
     var res = 0
     // 满五唯一，满两年 
     if (values.year == constant.yearFullFiveUnique || values.year == constant.yearFullTwo) {
-      // 普通住宅 免征
-      if (values.house == constant.houseNormal) {
+      // 普通住宅,公租房 免征
+      if (values.house == constant.houseNormal || values.right == constant.rightBuyPublicCost || values.right == constant.rightBuyPublicDiscount) {
         res = 0
       } else {
         res = (values.net - values.origin) * 0.056
@@ -113,9 +114,12 @@ var cal = {
     // 商品房
     if (values.right == constant.rightGoods) {
       res = 0
-    } else if (values.right == constant.rightBuyPublic) {
-      // 已购公租房
+    } else if (values.right == constant.rightBuyPublicCost) {
+      // 已购公房(成本价)
       res = (values.area * 15.6) * 0.0001
+    } else if (values.right == constant.rightBuyPublicDiscount) {
+      // 已购公房(优惠价)
+      res = (values.area * 15.6) * 0.0007
     } else if (values.right == constant.rightTwoCheap) {
       // 二类经适房
       res = values.net * 0.03
@@ -237,7 +241,8 @@ class App extends React.Component {
               <Form.Item name="right" label="产权性质">
                 <Select>
                   <Option value={constant.rightGoods}>商品房</Option>
-                  <Option value={constant.rightBuyPublic}>已购公租房</Option>
+                  <Option value={constant.rightBuyPublicCost}>已购公房（成本价）</Option>
+                  <Option value={constant.rightBuyPublicDiscount}>已购公房（优惠价）</Option>
                   <Option value={constant.rightTwoCheap}>二类经适房</Option>
                   <Option value={constant.rightOneCheap1}>一类经适房（10%）</Option>
                   <Option value={constant.rightOneCheap2}>一类经适房（差额70%）</Option>
