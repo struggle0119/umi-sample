@@ -215,7 +215,7 @@ class App extends React.Component {
     return (
       <div>
         <Tabs defaultActiveKey="1" centered>
-          <TabPane tab="房款计算器" key="1">
+          <TabPane tab="经纪人帮" key="1">
             <Form ref={this.formRef} onFinish={this.submit} initialValues={{
               buy: constant.buyFirst,
               house: constant.houseNormal,
